@@ -1,7 +1,7 @@
 import React from 'react';
 import dva, {connect} from 'dva';
 import axios from "axios";
-import {Button, DatePicker} from 'antd';
+import {Button, List, Typography, Divider} from 'antd';
 import 'antd/dist/antd.css';
 import './index.css'
 
@@ -64,9 +64,9 @@ const App = connect((state) => ({
     state
 }))(function (props) {
     const {statusPosts, statusUsers, users, posts} = props.state.model
+    console.log(users)
     return (
         <div>
-            <h2>Test</h2>
             <Button type="primary" onClick={() => props.dispatch({type: "model/getAsync"})}>
                 {
                     statusPosts === PENDING || statusUsers === PENDING ?
@@ -75,6 +75,26 @@ const App = connect((state) => ({
                         "PRESS ME"
                 }
             </Button>
+            <Divider orientation="left">Posts: </Divider>
+            <List
+                bordered
+                dataSource={posts}
+                renderItem={item => (
+                    <List.Item>
+                        <Typography.Text mark>[Post title]</Typography.Text> {item.title}
+                    </List.Item>
+                )}
+            />
+            <Divider orientation="left">Users: </Divider>
+            <List
+                bordered
+                dataSource={users}
+                renderItem={item => (
+                    <List.Item>
+                        <Typography.Text mark>[Username]</Typography.Text> {item.name}
+                    </List.Item>
+                )}
+            />
         </div>
     );
 });
