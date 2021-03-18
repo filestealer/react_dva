@@ -4,11 +4,12 @@ import axios from "axios";
 import {Button, Divider, List, Typography} from 'antd';
 import 'antd/dist/antd.css';
 import './index.css'
+import {AppConnect} from "./App";
 
 
-const PENDING = "PENDING"
-const ERROR = "ERROR"
-const SUCCESS = "SUCCESS"
+export const PENDING = "PENDING"
+export const ERROR = "ERROR"
+export const SUCCESS = "SUCCESS"
 
 
 const app = dva();
@@ -60,50 +61,10 @@ app.model({
 });
 
 
-const App = connect((state) => ({
-    state
-}))(function (props) {
-    const {statusPosts, statusUsers, users, posts} = props.state.model
-    return (
-        <div>
-            <Button
-                type="primary"
-                onClick={() => props.dispatch({type: "model/getAsync"})}
-                disabled={statusPosts === PENDING || statusUsers === PENDING}
-            >
-                {
-                    statusPosts === PENDING || statusUsers === PENDING ?
-                        <i className="fa fa-circle-o-notch fa-spin fa-3x fa-fw"/>
-                        :
-                        "PRESS ME"
-                }
-            </Button>
-            <Divider orientation="left">Posts: </Divider>
-            <List
-                bordered
-                dataSource={posts}
-                renderItem={item => (
-                    <List.Item>
-                        <Typography.Text mark>[Post title]</Typography.Text> {item.title}
-                    </List.Item>
-                )}
-            />
-            <Divider orientation="left">Users: </Divider>
-            <List
-                bordered
-                dataSource={users}
-                renderItem={item => (
-                    <List.Item>
-                        <Typography.Text mark>[Username]</Typography.Text> {item.name}
-                    </List.Item>
-                )}
-            />
-        </div>
-    );
-});
 
 
-app.router(() => <App/>);
+
+app.router(() => <AppConnect/>);
 
 
 app.start('#root');
