@@ -5,7 +5,7 @@ import {PENDING} from "./index";
 
 
 const App = (props) => {
-    const {statusPosts, posts} = props.state
+    const {posts, postsStatus} = props.state.posts
     const {dispatch} = props
     return (
         <div>
