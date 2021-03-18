@@ -1,7 +1,7 @@
 import React from 'react';
 import dva, {connect} from 'dva';
 import axios from "axios";
-import {Button, List, Typography, Divider} from 'antd';
+import {Button, Divider, List, Typography} from 'antd';
 import 'antd/dist/antd.css';
 import './index.css'
 
@@ -64,10 +64,13 @@ const App = connect((state) => ({
     state
 }))(function (props) {
     const {statusPosts, statusUsers, users, posts} = props.state.model
-    console.log(users)
     return (
         <div>
-            <Button type="primary" onClick={() => props.dispatch({type: "model/getAsync"})}>
+            <Button
+                type="primary"
+                onClick={() => props.dispatch({type: "model/getAsync"})}
+                disabled={statusPosts === PENDING || statusUsers === PENDING}
+            >
                 {
                     statusPosts === PENDING || statusUsers === PENDING ?
                         <i className="fa fa-circle-o-notch fa-spin fa-3x fa-fw"/>
