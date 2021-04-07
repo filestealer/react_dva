@@ -1,10 +1,9 @@
 import React from 'react';
 import dva, {connect} from 'dva';
-import axios from "axios";
-import {Button, Divider, List, Typography} from 'antd';
 import 'antd/dist/antd.css';
 import './index.css'
 import {AppConnect} from "./App";
+import posts from "./models/postsModel/posts";
 
 
 export const PENDING = "PENDING"
@@ -14,7 +13,6 @@ export const SUCCESS = "SUCCESS"
 
 const app = dva();
 
-
 app.model({
     namespace: 'model',
     state: {
@@ -23,26 +21,12 @@ app.model({
         users: [],
         statusUsers: ''
     },
-    effects: {
-        * getAsync(action, {call, put}) {
-            yield put({type: "pendingPosts"})
-            yield put({type: "pendingUsers"})
-            try {
-                const payload_posts = yield call(() => axios.get(`https://jsonplaceholder.typicode.com/posts?_limit=5`).then(res => res.data))
-                const payload_users = yield call(() => axios.get(`https://jsonplaceholder.typicode.com/users?_limit=3`).then(res => res.data))
-                yield put({type: "successPosts", payload: payload_posts})
-                yield put({type: "successUsers", payload: payload_users})
-            } catch (e) {
-                yield put({type: "errorPosts"})
-                yield put({type: "errorUsers"})
-            }
-        },
-    },
     reducers: {
         pendingPosts(state) {
             return {...state, statusPosts: PENDING}
         },
-        successPosts(state, {payload}) {
+        successPosts(state, action) {
+            const {payload} = action
             return {...state, statusPosts: SUCCESS, posts: payload}
         },
         errorPosts(state) {
@@ -58,10 +42,26 @@ app.model({
             return {...state, statusUsers: ERROR}
         }
     },
+    effects: {
+        * getAsync(action, {call, put, select}) {
+
+            yield put({type: "pendingPosts"})
+            yield put({type: "pendingUsers"})
+            try {
+                const payload_posts = yield call(() => axios.get(`https://jsonplaceholder.typicode.com/posts?_limit=5`).then(res => res.data))
+                const payload_users = yield call(() => axios.get(`https://jsonplaceholder.typicode.com/users?_limit=3`).then(res => res.data))
+                yield put({type: "successPosts", payload: payload_posts})
+                yield put({type: "successUsers", payload: payload_users})
+            } catch (e) {
+                console.log(e)
+                yield put({type: "errorPosts"})
+                yield put({type: "errorUsers"})
+            } finally {
+                const posts = yield select(state => state.model.posts);
+            }
+        },
+    },
 });
-
-
-
 
 
 app.router(() => <AppConnect/>);

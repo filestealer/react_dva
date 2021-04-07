@@ -5,16 +5,16 @@ import {PENDING} from "./index";
 
 
 const App = (props) => {
-    const {statusPosts, statusUsers, users, posts} = props.state.model
+    const {postsStatus, posts} = props.state
+    const {dispatch} = props
     return (
         <div>
             <Button
                 type="primary"
-                onClick={() => props.dispatch({type: "model/getAsync"})}
-                disabled={statusPosts === PENDING || statusUsers === PENDING}
-            >
+                onClick={() => dispatch({type: "model/getAsync"})}
+                disabled={postsStatus === PENDING}>
                 {
-                    statusPosts === PENDING || statusUsers === PENDING ?
+                    postsStatus === PENDING ?
                         <i className="fa fa-circle-o-notch fa-spin fa-3x fa-fw"/>
                         :
                         "PRESS ME"
@@ -30,20 +30,19 @@ const App = (props) => {
                     </List.Item>
                 )}
             />
-            <Divider orientation="left">Users: </Divider>
-            <List
-                bordered
-                dataSource={users}
-                renderItem={item => (
-                    <List.Item>
-                        <Typography.Text mark>[Username]</Typography.Text> {item.name}
-                    </List.Item>
-                )}
-            />
+            {/*<Divider orientation="left">Users: </Divider>*/}
+            {/*<List*/}
+            {/*    bordered*/}
+            {/*    dataSource={users}*/}
+            {/*    renderItem={item => (*/}
+            {/*        <List.Item>*/}
+            {/*            <Typography.Text mark>[Username]</Typography.Text> {item.name}*/}
+            {/*        </List.Item>*/}
+            {/*    )}*/}
+            {/*/>*/}
         </div>
     );
 }
 
 
-
-export const AppConnect = connect((state)=>({state}))(App);
+export const AppConnect = connect((state) => ({state}))(App);
