@@ -5,16 +5,16 @@ import {PENDING} from "./index";
 
 
 const App = (props) => {
-    const {postsStatus, posts} = props.state
+    const {statusPosts, posts} = props.state
     const {dispatch} = props
     return (
         <div>
             <Button
                 type="primary"
                 onClick={() => dispatch({type: "model/getAsync"})}
-                disabled={postsStatus === PENDING}>
+                disabled={statusPosts === PENDING}>
                 {
-                    postsStatus === PENDING ?
+                    statusPosts === PENDING ?
                         <i className="fa fa-circle-o-notch fa-spin fa-3x fa-fw"/>
                         :
                         "PRESS ME"

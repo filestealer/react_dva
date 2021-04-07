@@ -3,7 +3,7 @@ import dva, {connect} from 'dva';
 import 'antd/dist/antd.css';
 import './index.css'
 import {AppConnect} from "./App";
-import posts from "./models/postsModel/posts";
+import axios from "axios";
 
 
 export const PENDING = "PENDING"
