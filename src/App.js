@@ -2,6 +2,7 @@ import {connect} from "dva";
 import {Button, Divider, List, Typography} from "antd";
 import React from "react";
 import {PENDING} from "./index";
+import {postsActions} from "./models/postsModel/postsActions";
 
 
 const App = (props) => {
@@ -11,10 +12,13 @@ const App = (props) => {
         <div>
             <Button
                 type="primary"
-                onClick={() => dispatch({type: "model/getAsync"})}
-                disabled={statusPosts === PENDING}>
+                onClick={() => {
+                    dispatch(postsActions.getPostsFetching())
+                }}
+                disabled={postsStatus === PENDING }
+            >
                 {
-                    statusPosts === PENDING ?
+                    postsStatus === PENDING  ?
                         <i className="fa fa-circle-o-notch fa-spin fa-3x fa-fw"/>
                         :
                         "PRESS ME"
@@ -30,16 +34,6 @@ const App = (props) => {
                     </List.Item>
                 )}
             />
-            {/*<Divider orientation="left">Users: </Divider>*/}
-            {/*<List*/}
-            {/*    bordered*/}
-            {/*    dataSource={users}*/}
-            {/*    renderItem={item => (*/}
-            {/*        <List.Item>*/}
-            {/*            <Typography.Text mark>[Username]</Typography.Text> {item.name}*/}
-            {/*        </List.Item>*/}
-            {/*    )}*/}
-            {/*/>*/}
         </div>
     );
 }

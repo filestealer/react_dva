@@ -9,20 +9,20 @@ const posts = {
         postsStatus: ''
     },
     reducers: {
-        GET_POSTS_PENDING(state) {
+        get_posts_pending(state) {
             return {
                 ...state,
                 postsStatus: PENDING
             }
         },
-        GET_POSTS_SUCCESS(state, {payload}) {
+        get_posts_success(state, {payload}) {
             return {
                 ...state,
                 posts: payload,
                 postsStatus: SUCCESS
             }
         },
-        GET_POSTS_ERROR(state) {
+        get_posts_error(state) {
             return {
                 ...state,
                 postsStatus: ERROR
@@ -33,7 +33,7 @@ const posts = {
         * getPosts(action, {put, call}) {
             yield put(postsActions.getPostsPending())
             try {
-                const posts = yield call(postsApi.getPostsApi())
+                const posts = yield call(postsApi.getPostsApi)
                 yield put(postsActions.getPostsSuccess(posts))
             } catch (e) {
                 yield put(postsActions.getPostsError())
